@@ -1,5 +1,9 @@
 package com.itheima.audiocontrol;
 
+import java.util.TooManyListenersException;
+
+import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
+
 import android.content.Context;
 import android.media.AudioManager;
 import android.os.Bundle;
@@ -11,11 +15,14 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.SeekBar;
+import android.widget.ToggleButton;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
 
-public class ContentFragment extends Fragment implements OnSeekBarChangeListener {
+public class ContentFragment extends Fragment implements
+		OnSeekBarChangeListener {
 
 	private TextView music_volume;
 	private TextView ring_volume;
@@ -29,6 +36,7 @@ public class ContentFragment extends Fragment implements OnSeekBarChangeListener
 	private SeekBar sb_notify_volume;
 
 	private FragmentActivity activity;
+	private ImageButton ib_setting;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -40,9 +48,15 @@ public class ContentFragment extends Fragment implements OnSeekBarChangeListener
 	public View onCreateView(LayoutInflater inflater, ViewGroup container,
 			Bundle savedInstanceState) {
 
-		View fragement_slide = View.inflate(activity, R.layout.fragement_content,
-				null);
+		View fragement_slide = View.inflate(activity,
+				R.layout.fragement_content, null);
 
+		intUI(fragement_slide);
+
+		return fragement_slide;
+	}
+
+	private void intUI(View fragement_slide) {
 		music_volume = (TextView) fragement_slide
 				.findViewById(R.id.tv_show_music_volume);
 		ring_volume = (TextView) fragement_slide
@@ -50,6 +64,8 @@ public class ContentFragment extends Fragment implements OnSeekBarChangeListener
 		system_volume = (TextView) fragement_slide
 				.findViewById(R.id.tv_show_system_volume);
 		btn_silent = (Button) fragement_slide.findViewById(R.id.btn_silent);
+		ib_setting = (ImageButton) fragement_slide
+				.findViewById(R.id.ib_setting);
 
 		sb_music_volume = (SeekBar) fragement_slide
 				.findViewById(R.id.sb_music_volume);
@@ -94,6 +110,7 @@ public class ContentFragment extends Fragment implements OnSeekBarChangeListener
 		sb_system_volume.setOnSeekBarChangeListener(this);
 		sb_notify_volume.setOnSeekBarChangeListener(this);
 
+		// 设置一键静音监听
 		btn_silent.setOnClickListener(new OnClickListener() {
 
 			@Override
@@ -116,7 +133,23 @@ public class ContentFragment extends Fragment implements OnSeekBarChangeListener
 			}
 		});
 
-		return fragement_slide;
+		// 设置侧边栏监听
+		ib_setting.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				toggle();
+
+			}
+
+		});
+	}
+
+	private void toggle() {
+		MainActivity mianActivity = (MainActivity) activity;
+		SlidingMenu slidingMenu = mianActivity.getSlidingMenu();
+		slidingMenu.toggle();
 	}
 
 	@Override

@@ -28,6 +28,10 @@ public class MainActivity extends SlidingFragmentActivity {
 
 		// 屏幕预留的像素数
 		// 200/320 *width
+		
+		
+		
+		
 
 		int width = getWindowManager().getDefaultDisplay().getWidth();
 

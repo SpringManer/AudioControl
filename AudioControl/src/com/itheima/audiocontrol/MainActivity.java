@@ -54,6 +54,7 @@ public class MainActivity extends SlidingFragmentActivity {
 
 	@Override
 	public boolean onKeyDown(int keyCode, KeyEvent event) {
+		
 
 		ContentFragment contentFragment = (ContentFragment) fm
 				.findFragmentByTag("ContentFragment");

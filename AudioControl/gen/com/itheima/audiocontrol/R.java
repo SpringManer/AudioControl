@@ -134,50 +134,59 @@ or to a theme attribute in the form "<code>?[<i>package</i>:][<i>type</i>:]<i>na
         public static final int activity_vertical_margin=0x7f050001;
     }
     public static final class drawable {
-        public static final int bg=0x7f020000;
-        public static final int btn_bg=0x7f020001;
-        public static final int ic_launcher=0x7f020002;
-        public static final int setting2=0x7f020003;
+        public static final int back=0x7f020000;
+        public static final int bg=0x7f020001;
+        public static final int btn_bg=0x7f020002;
+        public static final int ic_launcher=0x7f020003;
+        public static final int setting2=0x7f020004;
     }
     public static final class id {
-        public static final int action_settings=0x7f04001e;
-        public static final int btn_silent=0x7f040009;
-        public static final int fl_content=0x7f040006;
-        public static final int fl_slide=0x7f04001c;
+        public static final int action_settings=0x7f040024;
+        public static final int btn_silent=0x7f04000f;
+        public static final int fl_content=0x7f04000c;
+        public static final int fl_slide=0x7f040022;
         public static final int fullscreen=0x7f040003;
-        public static final int ib_setting=0x7f040007;
+        public static final int ib_about_back=0x7f040009;
+        public static final int ib_setting=0x7f04000d;
+        public static final int ib_setting_back=0x7f04000a;
         public static final int left=0x7f040000;
-        public static final int ll_alarm_volume=0x7f040014;
-        public static final int ll_contain=0x7f04000a;
-        public static final int ll_music_volume=0x7f04000b;
-        public static final int ll_notify_volume=0x7f040011;
-        public static final int ll_ring_volume=0x7f04000e;
-        public static final int ll_system_volume=0x7f040017;
+        public static final int ll_alarm_volume=0x7f04001a;
+        public static final int ll_contain=0x7f040010;
+        public static final int ll_music_volume=0x7f040011;
+        public static final int ll_notify_volume=0x7f040017;
+        public static final int ll_ring_volume=0x7f040014;
+        public static final int ll_system_volume=0x7f04001d;
         public static final int margin=0x7f040002;
         public static final int none=0x7f040004;
         public static final int right=0x7f040001;
-        public static final int sb_alarm_volume=0x7f040016;
-        public static final int sb_music_volume=0x7f04000d;
-        public static final int sb_notify_volume=0x7f040013;
-        public static final int sb_ring_volume=0x7f040010;
-        public static final int sb_system_volume=0x7f040019;
+        public static final int sb_alarm_volume=0x7f04001c;
+        public static final int sb_music_volume=0x7f040013;
+        public static final int sb_notify_volume=0x7f040019;
+        public static final int sb_ring_volume=0x7f040016;
+        public static final int sb_system_volume=0x7f04001f;
         public static final int selected_view=0x7f040005;
-        public static final int slidingmenumain=0x7f04001d;
-        public static final int tv_about=0x7f04001b;
-        public static final int tv_setting=0x7f04001a;
-        public static final int tv_show_alarm_volume=0x7f040015;
-        public static final int tv_show_music_volume=0x7f04000c;
-        public static final int tv_show_notify_volume=0x7f040012;
-        public static final int tv_show_ring_volume=0x7f04000f;
-        public static final int tv_show_system_volume=0x7f040018;
-        public static final int tv_volume=0x7f040008;
+        public static final int slidingmenumain=0x7f040023;
+        public static final int tv_about=0x7f040021;
+        public static final int tv_des=0x7f040007;
+        public static final int tv_intro=0x7f04000b;
+        public static final int tv_set_about=0x7f040006;
+        public static final int tv_setting=0x7f040020;
+        public static final int tv_show_alarm_volume=0x7f04001b;
+        public static final int tv_show_music_volume=0x7f040012;
+        public static final int tv_show_notify_volume=0x7f040018;
+        public static final int tv_show_ring_volume=0x7f040015;
+        public static final int tv_show_system_volume=0x7f04001e;
+        public static final int tv_version=0x7f040008;
+        public static final int tv_volume=0x7f04000e;
     }
     public static final class layout {
-        public static final int content=0x7f030000;
-        public static final int fragement_content=0x7f030001;
-        public static final int fragement_slide=0x7f030002;
-        public static final int slide=0x7f030003;
-        public static final int slidingmenumain=0x7f030004;
+        public static final int activity_about=0x7f030000;
+        public static final int activity_setting=0x7f030001;
+        public static final int content=0x7f030002;
+        public static final int fragement_content=0x7f030003;
+        public static final int fragement_slide=0x7f030004;
+        public static final int slide=0x7f030005;
+        public static final int slidingmenumain=0x7f030006;
     }
     public static final class menu {
         public static final int main=0x7f080000;

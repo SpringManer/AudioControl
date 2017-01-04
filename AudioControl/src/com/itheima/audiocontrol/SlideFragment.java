@@ -53,13 +53,17 @@ public class SlideFragment extends Fragment implements OnClickListener {
 			Intent intent = new Intent(activity, SettingActivity.class);
 
 			startActivity(intent);
+			activity.overridePendingTransition(android.R.anim.slide_in_left,
+					android.R.anim.slide_out_right);
 
 			break;
 		case R.id.tv_about:
-			
+
 			Intent about = new Intent(activity, AboutActivity.class);
 
 			startActivity(about);
+			activity.overridePendingTransition(android.R.anim.slide_in_left,
+					android.R.anim.slide_out_right);
 
 			break;
 		}

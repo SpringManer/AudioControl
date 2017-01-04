@@ -8,9 +8,16 @@
         android:minSdkVersion="8"
         android:targetSdkVersion="17" />
 
+    <!-- 添加快捷方式 -->
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT" />
+    <!-- 移除快捷方式 -->
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT" />
+    <!-- 查询快捷方式 -->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS" />
+
     <application
         android:allowBackup="true"
-        android:icon="@drawable/btn_bg"
+        android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
@@ -24,7 +31,7 @@
         </activity>
         <activity android:name="com.itheima.audiocontrol.SettingActivity" >
         </activity>
-         <activity android:name="com.itheima.audiocontrol.AboutActivity"  >
+        <activity android:name="com.itheima.audiocontrol.AboutActivity" >
         </activity>
     </application>
 

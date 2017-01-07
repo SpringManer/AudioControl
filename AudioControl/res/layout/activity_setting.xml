@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#B1CDB7"
+    android:orientation="vertical" >
+
+    <ImageButton
+        android:id="@+id/ib_setting_back"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginBottom="41dp"
+        android:layout_marginRight="46dp"
+        android:background="@drawable/selec_back" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="20dp"
+        android:layout_marginTop="80dp"
+        android:orientation="vertical" >
+
+        <TextView
+            android:id="@+id/tv_intro"
+            android:layout_marginLeft="5dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="请选择需要同步调节的声音类型："
+            android:textSize="18sp" />
+
+        <CheckBox 
+            android:layout_marginLeft="10dp"
+            android:id="@+id/cb_music"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="媒体音量" />
+
+        <CheckBox
+            android:id="@+id/cb_ring"
+              android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="铃声音量" />
+
+        <CheckBox
+            android:id="@+id/cb_notify"
+             android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="通知音量" />
+
+        <CheckBox
+              android:layout_marginLeft="10dp"
+            android:id="@+id/cb_alarm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="闹钟音量" />
+
+        <CheckBox
+            android:id="@+id/cb_system"
+               android:layout_marginLeft="10dp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="系统音量" />
+        
+      
+        <TextView
+            android:layout_marginTop="5dp"
+            android:layout_marginLeft="5dp"
+            android:layout_marginRight="8dp"
+            android:id="@+id/tv_intro"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="注意：\n           铃声、通知和系统这三个音量是相互影响的，只要调节其中一个，就会影响另外两个。不同机型，可能会存在差异！\n        还有部分机型，比如一加、乐视，自带滑动按键开关静音模式，当处于静音模式的时候，铃声和通知也是调节不了的呦！"
+            android:textSize="16sp" />
+    </LinearLayout>
+
+</RelativeLayout>

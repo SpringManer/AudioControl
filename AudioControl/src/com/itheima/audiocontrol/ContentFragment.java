@@ -76,10 +76,10 @@ public class ContentFragment extends Fragment implements
 	 */
 	private void randomChangeBg() {
 		int[] pic = new int[] { R.drawable.pc1, R.drawable.pc2, R.drawable.pc3,
-				R.drawable.pc4, R.drawable.pc5, R.drawable.pc6 };
+				R.drawable.pc4, R.drawable.pc5, R.drawable.pc6,R.drawable.pc7 };
 
 		Random random = new Random();
-		int picNum = random.nextInt(5);
+		int picNum = random.nextInt(7);
 
 		ll_content_root.setBackgroundResource(pic[picNum]);
 	}
@@ -193,17 +193,7 @@ public class ContentFragment extends Fragment implements
 
 			edit.commit();
 
-			// 设置所有音量为零
-			am.setStreamVolume(AudioManager.STREAM_MUSIC, 0,
-					AudioManager.FLAG_PLAY_SOUND);
-			am.setStreamVolume(AudioManager.STREAM_SYSTEM, 0,
-					AudioManager.FLAG_PLAY_SOUND);
-			am.setStreamVolume(AudioManager.STREAM_RING, 0,
-					AudioManager.FLAG_PLAY_SOUND);
-			am.setStreamVolume(AudioManager.STREAM_ALARM, 0,
-					AudioManager.FLAG_PLAY_SOUND);
-			am.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0,
-					AudioManager.FLAG_PLAY_SOUND);
+			oneKeySilent();
 			// 更新seekBar进度
 			updateSeekBarProgress();
 
@@ -245,10 +235,37 @@ public class ContentFragment extends Fragment implements
 
 	}
 
+	public  void oneKeySilent() {
+		// 设置所有音量为零
+		am.setStreamVolume(AudioManager.STREAM_MUSIC, 0,
+				AudioManager.FLAG_PLAY_SOUND);
+		am.setStreamVolume(AudioManager.STREAM_SYSTEM, 0,
+				AudioManager.FLAG_PLAY_SOUND);
+		am.setStreamVolume(AudioManager.STREAM_RING, 0,
+				AudioManager.FLAG_PLAY_SOUND);
+		am.setStreamVolume(AudioManager.STREAM_ALARM, 0,
+				AudioManager.FLAG_PLAY_SOUND);
+		am.setStreamVolume(AudioManager.STREAM_NOTIFICATION, 0,
+				AudioManager.FLAG_PLAY_SOUND);
+	}
+
 	private void toggle() {
 		MainActivity mianActivity = (MainActivity) activity;
 		SlidingMenu slidingMenu = mianActivity.getSlidingMenu();
 		slidingMenu.toggle();
+	}
+
+	/**
+	 * 可以显示界面和交互的时候，更新音量界面
+	 */
+	@Override
+	public void onResume() {
+
+		super.onResume();
+
+		
+		//更新音量界面
+		updateSeekBarProgress();
 	}
 
 	@Override
@@ -267,11 +284,11 @@ public class ContentFragment extends Fragment implements
 	public boolean onKeyDown(int keyCode, KeyEvent event, boolean b) {
 
 		// 获取保存在sp的checkBox状态，进行相应的设置
-		boolean cb_music_state = checkbox_state.getBoolean("cb_music", false);
-		boolean cb_ring_state = checkbox_state.getBoolean("cb_ring", false);
-		boolean cb_notify_state = checkbox_state.getBoolean("cb_notify", false);
-		boolean cb_alarm_state = checkbox_state.getBoolean("cb_alarm", false);
-		boolean cb_system_state = checkbox_state.getBoolean("cb_system", false);
+		boolean cb_music_state = checkbox_state.getBoolean("cb_music", true);
+		boolean cb_ring_state = checkbox_state.getBoolean("cb_ring", true);
+		boolean cb_notify_state = checkbox_state.getBoolean("cb_notify", true);
+		boolean cb_alarm_state = checkbox_state.getBoolean("cb_alarm", true);
+		boolean cb_system_state = checkbox_state.getBoolean("cb_system", true);
 
 		// 获取手机当前音量值
 		switch (keyCode) {

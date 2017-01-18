@@ -30,18 +30,21 @@ public class GuideActivity extends Activity {
 		super.onCreate(savedInstanceState);
 
 		requestWindowFeature(Window.FEATURE_NO_TITLE);
-		setContentView(R.layout.activity_guide);
+//		setContentView(R.layout.activity_guide);
 
 		system_config = getSharedPreferences("system_config",
 				Context.MODE_PRIVATE);
-
-		guideResources = new int[] { R.drawable.guide, R.drawable.guide2 };
-
-		vp_guide = (ViewPager) findViewById(R.id.vp_guide);
-		btn_guide = (ImageButton) findViewById(R.id.btn_guide);
+//
+//		guideResources = new int[] { R.drawable.guide, R.drawable.guide2 };
+//
+//		vp_guide = (ViewPager) findViewById(R.id.vp_guide);
+//		btn_guide = (ImageButton) findViewById(R.id.btn_guide);
 
 		GuideAdaptor guideAdaptor = new GuideAdaptor();
 		vp_guide.setAdapter(guideAdaptor);
+		
+		
+		vp_guide.setCurrentItem(0);
 
 		// System.out.println("guideResources的长度为"+guideResources.length);
 
@@ -50,7 +53,7 @@ public class GuideActivity extends Activity {
 			@Override
 			public void onPageSelected(int pos) {
 
-				if (pos == guideResources.length - 1) {
+				if (pos == guideResources.length-1 ) {
 
 					btn_guide.setVisibility(View.VISIBLE);
 

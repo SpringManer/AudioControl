@@ -21,7 +21,6 @@ public class MainActivity extends SlidingFragmentActivity {
 	private FragmentManager fm;
 	public static final String ACTION_ADD_SHORTCUT = "com.android.launcher.action.INSTALL_SHORTCUT";
 	private SharedPreferences system_config;
-//	private Receive receive;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -54,9 +53,9 @@ public class MainActivity extends SlidingFragmentActivity {
 			AlertDialog.Builder dialog = new AlertDialog.Builder(
 					MainActivity.this);
 
-			View inflate = View.inflate(this, R.layout.alert_dialog, null);
+//			View inflate = View.inflate(this, R.layout.alert_dialog, null);
 
-			dialog.setView(inflate);
+//			dialog.setView(inflate);
 			dialog.setCancelable(false);
 			dialog.setTitle("创建桌面快捷方式？？？");
 			dialog.setNegativeButton("人家不要嘛", new OnClickListener() {
@@ -64,26 +63,32 @@ public class MainActivity extends SlidingFragmentActivity {
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					// 跳转欢迎页面
+					//
+					// Intent intent = new Intent(getApplicationContext(),
+					// GuideActivity.class);
+					//
+					// startActivity(intent);
 
-					Intent intent = new Intent(getApplicationContext(),
-							GuideActivity.class);
-
-					startActivity(intent);
+					system_config.edit().putBoolean("isFirstComApp", false)
+							.commit();
 
 				}
 			});
-			dialog.setPositiveButton("就这一次哦", new OnClickListener() {
+			dialog.setPositiveButton("就这一次哦 ", new OnClickListener() {
 
 				@Override
 				public void onClick(DialogInterface dialog, int which) {
 					addShortcut("音量控制");
 
-					// 跳转欢迎页面
+					// // 跳转欢迎页面
+					//
+					// Intent intent = new Intent(getApplicationContext(),
+					// GuideActivity.class);
+					//
+					// startActivity(intent);
 
-					Intent intent = new Intent(getApplicationContext(),
-							GuideActivity.class);
-
-					startActivity(intent);
+					system_config.edit().putBoolean("isFirstComApp", false)
+							.commit();
 
 				}
 			});
@@ -105,11 +110,6 @@ public class MainActivity extends SlidingFragmentActivity {
 
 		transaction.commit();
 
-//		// 绑定Servics
-//		Intent intent = new Intent(this, WidgetService.class);
-//		receive = new Receive();
-//		bindService(intent, receive, Context.BIND_AUTO_CREATE);
-
 	}
 
 	public ContentFragment getContentFragment() {
@@ -120,37 +120,14 @@ public class MainActivity extends SlidingFragmentActivity {
 		return contentFragment;
 
 	}
-
+	
 	@Override
 	protected void onDestroy() {
-
-//		unbindService(receive);
+		// TODO Auto-generated method stub
+		
+		
 		super.onDestroy();
 	}
-//
-//	class Receive implements ServiceConnection {
-//
-//		@Override
-//		public void onServiceConnected(ComponentName name, IBinder service) {
-//
-//			ContorlAudio contorlAudio = (ContorlAudio) service;
-//			WidgetService widgetService = (WidgetService) contorlAudio
-//					.getService();
-//
-//			// widgetService.test();
-//
-//			widgetService.getMainActivity(MainActivity.this);
-//			System.out.println("已经传送MainActivity了");
-//
-//		}
-//
-//		@Override
-//		public void onServiceDisconnected(ComponentName name) {
-//			// TODO Auto-generated method stub
-//
-//		}
-//
-//	}
 
 	/**
 	 * 创建快捷方式

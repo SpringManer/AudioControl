@@ -1,6 +1,8 @@
 package com.itheima.audiocontrol;
 
 import android.app.Activity;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,6 +24,7 @@ public class AboutActivity extends Activity {
 
 			@Override
 			public void onClick(View v) {
+				
 
 				finish();
 

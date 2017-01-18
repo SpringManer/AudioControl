@@ -30,6 +30,9 @@ public class SettingActivity extends Activity implements
 
 		checkbox_state = getSharedPreferences("checkbox_state",
 				Context.MODE_PRIVATE);
+		
+		
+		
 
 		ImageButton ib_back = (ImageButton) findViewById(R.id.ib_setting_back);
 

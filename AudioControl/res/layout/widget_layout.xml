@@ -6,14 +6,19 @@
     
     
      <ImageButton
-        android:id="@+id/ib_widget_silent"
-        android:layout_width="60dp"
-        android:layout_height="60dp"
-        android:background="@drawable/selec_silent" />
+        android:id="@+id/ib_widget_guide"
+        android:layout_width="wrap_content"
+        android:paddingLeft="4dp"
+        android:layout_height="wrap_content"
+        android:src="@drawable/widget_2"
+        android:background="@android:color/transparent" />
 
     
     <TextView
+        android:id="@+id/btn_widget_guide"
         android:layout_width="wrap_content"
+        android:textSize="14sp"
+        android:textColor="#fff"
         android:layout_height="wrap_content"
         android:text="一键静音" />
     

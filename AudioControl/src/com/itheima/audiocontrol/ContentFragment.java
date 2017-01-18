@@ -1,14 +1,30 @@
 package com.itheima.audiocontrol;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 import java.util.Random;
 
+import android.app.Activity;
+import android.app.ActivityManager;
+import android.app.ActivityManager.RunningServiceInfo;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.SharedPreferences.Editor;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.BitmapFactory.Options;
+import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.media.AudioManager;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
+import android.provider.MediaStore;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
+import android.view.Display;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -19,12 +35,15 @@ import android.widget.LinearLayout;
 import android.widget.SeekBar;
 import android.widget.SeekBar.OnSeekBarChangeListener;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.jeremyfeinstein.slidingmenu.lib.SlidingMenu;
 
 public class ContentFragment extends Fragment implements
 		OnSeekBarChangeListener, OnClickListener {
 
+	private static final int CROP_PHOTO = 1;
+	private static final int CHOICE_PHOTO = 2;
 	private TextView music_volume;
 	private TextView ring_volume;
 	private TextView system_volume;
@@ -42,6 +61,13 @@ public class ContentFragment extends Fragment implements
 	private SharedPreferences current_volume;
 	private SharedPreferences checkbox_state;
 	private LinearLayout ll_content_root;
+	private SharedPreferences system_config;
+	private Bitmap bgResult;
+	private ImageButton ib_chang_bg;
+
+	Uri choice_imageUri;
+	private Bitmap bitmap;
+	private File choice_image;
 
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -53,6 +79,14 @@ public class ContentFragment extends Fragment implements
 
 		checkbox_state = activity.getSharedPreferences("checkbox_state",
 				Context.MODE_PRIVATE);
+
+		system_config = activity.getSharedPreferences("system_config",
+				Context.MODE_PRIVATE);
+
+		choice_image = new File(Environment.getExternalStorageDirectory(),
+				"choice_image.jpg");
+
+		choice_imageUri = Uri.fromFile(choice_image);
 
 	}
 
@@ -66,22 +100,119 @@ public class ContentFragment extends Fragment implements
 		intUI(fragement_slide);
 
 		// 动态随机更换壁纸
-		randomChangeBg();
+		// randomChangeBg();
+
+		// 恢复之前设置的背景
+
+		try {
+			bitmap = BitmapFactory.decodeStream(activity.getContentResolver()
+					.openInputStream(choice_imageUri));
+
+			if (bitmap != null) {
+
+				Drawable drawable = new BitmapDrawable(bitmap);
+
+				// iv_bg.setImageBitmap(bitmap);
+
+				ll_content_root.setBackground(drawable);
+
+			}
+
+		} catch (FileNotFoundException e) {
+			e.printStackTrace();
+		}
+
+		boolean isWidgetRuning = system_config.getBoolean("isWidgetRuning",
+				false);
+
+		boolean serviceRunning = isServiceRunning();
+
+		if (!serviceRunning) {
+
+			if (isWidgetRuning) {
+
+				Intent intent = new Intent(activity, WidgetService.class);
+
+				activity.startService(intent);
+
+				Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
+
+			}
+
+		}
 
 		return fragement_slide;
 	}
 
-	/**
-	 * 随机更换壁纸
-	 */
-	private void randomChangeBg() {
-		int[] pic = new int[] { R.drawable.pc1, R.drawable.pc2, R.drawable.pc3,
-				R.drawable.pc4, R.drawable.pc5, R.drawable.pc6,R.drawable.pc7 };
+	private boolean isServiceRunning() {
+		ActivityManager manager = (ActivityManager) activity
+				.getSystemService(Context.ACTIVITY_SERVICE);
+		for (RunningServiceInfo service : manager
+				.getRunningServices(Integer.MAX_VALUE)) {
 
-		Random random = new Random();
-		int picNum = random.nextInt(7);
+			System.out.println("运行的服务" + service.service.getClassName());
 
-		ll_content_root.setBackgroundResource(pic[picNum]);
+			if ("com.itheima.audiocontrol.WidgetService".equals(service.service
+					.getClassName())) {
+
+				return true;
+			}
+		}
+		return false;
+	}
+
+	// /**
+	// * 随机更换壁纸
+	// */
+	// private void randomChangeBg() {
+	// int[] pic = new int[] { R.drawable.pc1, R.drawable.pc2, R.drawable.pc3,
+	// R.drawable.pc4, R.drawable.pc5, R.drawable.pc6, R.drawable.pc7 };
+	//
+	// Random random = new Random();
+	// int picNum = random.nextInt(7);
+	//
+	// Options opts = new BitmapFactory.Options();
+	// opts.inJustDecodeBounds = true;
+	//
+	// BitmapFactory.decodeResource(getResources(), pic[picNum], opts);
+	// // 获取到图片的宽和高信息
+	// int imageWidth = opts.outWidth;
+	// int imageHeight = opts.outHeight;
+	// // 获取到屏幕对象
+	// Display display = activity.getWindowManager().getDefaultDisplay();
+	// // 获取到屏幕的真是宽和高
+	// int screenWidth = display.getWidth();
+	// int screenHeight = display.getHeight();
+	//
+	// // 计算缩放比例
+	// int widthScale = imageWidth / screenWidth;
+	// int heightScale = imageHeight / screenHeight;
+	// // 计算出最大的比例
+	// int scale = widthScale > heightScale ? widthScale : heightScale;
+	// // 使用缩放比例进行缩放加载图片
+	// opts.inJustDecodeBounds = false; // 加载器就会返回图片了
+	// // 配置该参数加载图片时 BitmapFactory 就会自动缩放图片
+	// opts.inSampleSize = scale;
+	// bgResult = BitmapFactory.decodeResource(getResources(), pic[picNum],
+	// opts);
+	// Drawable drawable = new BitmapDrawable(bgResult);
+	//
+	// ll_content_root.setBackground(drawable);
+	//
+	// // ll_content_root.setBackgroundResource(pic[picNum]);
+	// }
+
+	@Override
+	public void onDestroyView() {
+
+		if (bitmap != null) {
+
+			bitmap.recycle();
+
+		}
+
+		super.onDestroyView();
+
 	}
 
 	private void intUI(View fragement_slide) {
@@ -96,6 +227,9 @@ public class ContentFragment extends Fragment implements
 				.findViewById(R.id.ib_recovery);
 		ib_setting = (ImageButton) fragement_slide
 				.findViewById(R.id.ib_setting);
+
+		ib_chang_bg = (ImageButton) fragement_slide
+				.findViewById(R.id.ib_chang_bg);
 
 		ll_content_root = (LinearLayout) fragement_slide
 				.findViewById(R.id.ll_content_root);
@@ -149,6 +283,7 @@ public class ContentFragment extends Fragment implements
 		ib_recovery.setOnClickListener(this);
 		// 设置侧边栏监听
 		ib_setting.setOnClickListener(this);
+		ib_chang_bg.setOnClickListener(this);
 	}
 
 	/**
@@ -231,11 +366,106 @@ public class ContentFragment extends Fragment implements
 
 			break;
 
+		// 更换背景逻辑
+		case R.id.ib_chang_bg:
+			//
+			// // 创建存储文件路径
+			//
+			// choice_image = new File(
+			// Environment.getExternalStorageDirectory(),
+			// "choice_image.jpg");
+			try {
+				if (choice_image.exists()) {
+
+					choice_image.delete();
+				}
+				choice_image.createNewFile();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+
+			Intent intent = new Intent(Intent.ACTION_PICK);
+			intent.setType("image/*");// 相片类型
+			startActivityForResult(intent, CHOICE_PHOTO);
+
+			break;
+
 		}
 
 	}
 
-	public  void oneKeySilent() {
+	@Override
+	public void onActivityResult(int requestCode, int resultCode, Intent data) {
+		super.onActivityResult(requestCode, resultCode, data);
+
+		switch (requestCode) {
+
+		case CHOICE_PHOTO:
+
+			if (resultCode == Activity.RESULT_OK) {
+
+				// 启动裁剪程序
+
+				int width = 500;
+				int hight = 890;
+
+				Uri data2 = data.getData();
+				Intent intent = new Intent("com.android.camera.action.CROP");
+				intent.setDataAndType(data2, "image/*");
+				// 下面这个crop=true是设置在开启的Intent中设置显示的VIEW可裁剪
+				intent.putExtra("crop", "true");
+				intent.putExtra("scale", true);// 去黑边
+				intent.putExtra("scaleUpIfNeeded", true);// 去黑边
+				// <a target="_blank" href="http://www.2cto.com/kf/web/asp/"
+				// class="keylink"
+				// style="border:none; padding:0px; margin:0px; color:rgb(51,51,51); text-decoration:none; font-size:14px; background:none">asp</a>ectX
+				// aspectY 是宽高的比例
+				intent.putExtra("aspectX", 1);// 输出是X方向的比例
+				intent.putExtra("aspectY", 1.7);
+				// outputX outputY 是裁剪图片宽高，切忌不要再改动下列数字，会卡死
+				intent.putExtra("outputX", 1080);// 输出X方向的像素
+				intent.putExtra("outputY", 1920);
+				intent.putExtra("outputFormat",
+						Bitmap.CompressFormat.JPEG.toString());
+				intent.putExtra("noFaceDetection", true);
+				intent.putExtra(MediaStore.EXTRA_OUTPUT, choice_imageUri);
+				intent.putExtra("return-data", false);// 设置为不返回数据
+
+				startActivityForResult(intent, CROP_PHOTO);
+
+			}
+
+			break;
+
+		case CROP_PHOTO:
+
+			if (resultCode == Activity.RESULT_OK) {
+
+				// 启动显示程序
+
+				try {
+					bitmap = BitmapFactory.decodeStream(activity
+							.getContentResolver().openInputStream(
+									choice_imageUri));
+
+					Drawable drawable = new BitmapDrawable(bitmap);
+
+					// iv_bg.setImageBitmap(bitmap);
+
+					ll_content_root.setBackground(drawable);
+
+				} catch (FileNotFoundException e) {
+					e.printStackTrace();
+				}
+
+			}
+
+			break;
+		}
+
+	}
+
+	public void oneKeySilent() {
 		// 设置所有音量为零
 		am.setStreamVolume(AudioManager.STREAM_MUSIC, 0,
 				AudioManager.FLAG_PLAY_SOUND);
@@ -263,9 +493,27 @@ public class ContentFragment extends Fragment implements
 
 		super.onResume();
 
-		
-		//更新音量界面
+		// 更新音量界面
 		updateSeekBarProgress();
+
+		boolean isWidgetRuning = system_config.getBoolean("isWidgetRuning",
+				false);
+
+		boolean serviceRunning = isServiceRunning();
+
+		if (!serviceRunning) {
+
+			if (isWidgetRuning) {
+
+				Intent intent = new Intent(activity, WidgetService.class);
+
+				activity.startService(intent);
+
+				Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
+
+			}
+
+		}
 	}
 
 	@Override
@@ -295,23 +543,6 @@ public class ContentFragment extends Fragment implements
 
 		// 音量减小
 		case KeyEvent.KEYCODE_VOLUME_DOWN:
-
-			// // 调节音乐音量
-			// am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-			// AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
-			// // 调节铃声音量
-			// am.adjustStreamVolume(AudioManager.STREAM_RING,
-			// AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
-			//
-			// // 调节闹钟音量
-			// am.adjustStreamVolume(AudioManager.STREAM_ALARM,
-			// AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
-			// // 调节系统音量
-			// am.adjustStreamVolume(AudioManager.STREAM_SYSTEM,
-			// AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
-			// // 调节通知音量
-			// am.adjustStreamVolume(AudioManager.STREAM_NOTIFICATION,
-			// AudioManager.ADJUST_LOWER, AudioManager.FLAG_PLAY_SOUND);
 
 			if (cb_music_state) {
 
@@ -350,23 +581,6 @@ public class ContentFragment extends Fragment implements
 			return true;
 			// 音量增大
 		case KeyEvent.KEYCODE_VOLUME_UP:
-
-			// // 调节音乐音量
-			// am.adjustStreamVolume(AudioManager.STREAM_MUSIC,
-			// AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-			// // 调节铃声音量
-			// am.adjustStreamVolume(AudioManager.STREAM_RING,
-			// AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-			//
-			// // 调节闹钟音量
-			// am.adjustStreamVolume(AudioManager.STREAM_ALARM,
-			// AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-			// // 调节系统音量
-			// am.adjustStreamVolume(AudioManager.STREAM_SYSTEM,
-			// AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
-			// // 调节通知音量
-			// am.adjustStreamVolume(AudioManager.STREAM_NOTIFICATION,
-			// AudioManager.ADJUST_RAISE, AudioManager.FLAG_PLAY_SOUND);
 
 			if (cb_music_state) {
 
@@ -484,13 +698,11 @@ public class ContentFragment extends Fragment implements
 
 	@Override
 	public void onStartTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
 
 	}
 
 	@Override
 	public void onStopTrackingTouch(SeekBar seekBar) {
-		// TODO Auto-generated method stub
 
 	}
 

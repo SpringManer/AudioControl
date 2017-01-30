@@ -135,7 +135,8 @@ public class ContentFragment extends Fragment implements
 
 				activity.startService(intent);
 
-				Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
+//				Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
+				ControlUtils.getToast(getActivity(), "后台一键静音服务已经重新启动...");
 
 			}
 
@@ -509,7 +510,8 @@ public class ContentFragment extends Fragment implements
 
 				activity.startService(intent);
 
-				Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
+//				Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
+				ControlUtils.getToast(getActivity(), "后台一键静音服务已经重新启动...");
 
 			}
 

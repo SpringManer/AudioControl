@@ -135,7 +135,7 @@ public class ContentFragment extends Fragment implements
 
 				activity.startService(intent);
 
-//				Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
+				// Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
 				ControlUtils.getToast(getActivity(), "后台一键静音服务已经重新启动...");
 
 			}
@@ -290,8 +290,12 @@ public class ContentFragment extends Fragment implements
 	/**
 	 * 各种点点击监听
 	 */
+//	boolean isSilentStyle = ;
+
 	@Override
 	public void onClick(View v) {
+		// 判断是否已经是静音模式
+		boolean isSilentMode = current_volume.getBoolean("isSilentMode", false);
 
 		switch (v.getId()) {
 		case R.id.ib_setting:
@@ -300,6 +304,12 @@ public class ContentFragment extends Fragment implements
 
 			break;
 		case R.id.ib_silent:
+
+			// 判断是否已经是静音模式
+			
+			if (isSilentMode) {
+				break;
+			}
 
 			// 获取当前音量存入sp
 
@@ -319,6 +329,16 @@ public class ContentFragment extends Fragment implements
 			int currentNotifyVolume = am
 					.getStreamVolume(AudioManager.STREAM_NOTIFICATION);
 
+			
+
+			// 判断，如果所有音量都为0.不进行存储。
+			// int allVolumeSum = currentMusicVolume1 + currentRingVolume1
+			// + currentSystemVolume1 + currentAlarmVolume1
+			// + currentNotifyVolume1;
+			// if (allVolumeSum != 0) {
+			// break;
+			// }
+
 			Editor edit = current_volume.edit();
 
 			edit.putInt("currentMusicVolume", currentMusicVolume);
@@ -326,44 +346,61 @@ public class ContentFragment extends Fragment implements
 			edit.putInt("currentSystemVolume", currentSystemVolume);
 			edit.putInt("currentAlarmVolume", currentAlarmVolume);
 			edit.putInt("currentNotifyVolume", currentNotifyVolume);
+			
+			
+//			edit.putBoolean("idHaveSilent", true);
+			// 设置已经是静音模式
+			edit.putBoolean("isSilentMode", true);
 
 			edit.commit();
 
+			// 一键静音
 			oneKeySilent();
 			// 更新seekBar进度
 			updateSeekBarProgress();
+
+			
 
 			break;
 		case R.id.ib_recovery:
 
 			// 从sp获取之前的音量
+			Editor edit1 = current_volume.edit();
+			
+//			edit1.putBoolean("idHaveSilent", false);
+			// 设置不是静音模式
+			edit1.putBoolean("isSilentMode", false);
+			
+			
+			edit1.commit();
 
-			int currentMusicVolume1 = current_volume.getInt(
+			int currentMusicVolume2 = current_volume.getInt(
 					"currentMusicVolume", 0);
-			int currentRingVolume1 = current_volume.getInt("currentRingVolume",
+			int currentRingVolume2 = current_volume.getInt("currentRingVolume",
 					0);
-			int currentSystemVolume1 = current_volume.getInt(
+			int currentSystemVolume2 = current_volume.getInt(
 					"currentSystemVolume", 0);
-			int currentAlarmVolume1 = current_volume.getInt(
+			int currentAlarmVolume2 = current_volume.getInt(
 					"currentAlarmVolume", 0);
-			int currentNotifyVolume1 = current_volume.getInt(
+			int currentNotifyVolume2 = current_volume.getInt(
 					"currentNotifyVolume", 0);
 
 			// 设置当前音量
 
 			// 设置所有音量存储的音量值
-			am.setStreamVolume(AudioManager.STREAM_MUSIC, currentMusicVolume1,
+			am.setStreamVolume(AudioManager.STREAM_MUSIC, currentMusicVolume2,
 					AudioManager.FLAG_PLAY_SOUND);
 			am.setStreamVolume(AudioManager.STREAM_SYSTEM,
-					currentSystemVolume1, AudioManager.FLAG_PLAY_SOUND);
-			am.setStreamVolume(AudioManager.STREAM_RING, currentRingVolume1,
+					currentSystemVolume2, AudioManager.FLAG_PLAY_SOUND);
+			am.setStreamVolume(AudioManager.STREAM_RING, currentRingVolume2,
 					AudioManager.FLAG_PLAY_SOUND);
-			am.setStreamVolume(AudioManager.STREAM_ALARM, currentAlarmVolume1,
+			am.setStreamVolume(AudioManager.STREAM_ALARM, currentAlarmVolume2,
 					AudioManager.FLAG_PLAY_SOUND);
 			am.setStreamVolume(AudioManager.STREAM_NOTIFICATION,
-					currentNotifyVolume1, AudioManager.FLAG_PLAY_SOUND);
+					currentNotifyVolume2, AudioManager.FLAG_PLAY_SOUND);
 			// 更新seekBar进度
 			updateSeekBarProgress();
+
 
 			break;
 
@@ -510,7 +547,7 @@ public class ContentFragment extends Fragment implements
 
 				activity.startService(intent);
 
-//				Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
+				// Toast.makeText(getActivity(), "后台一键静音服务已经重新启动...", 0).show();
 				ControlUtils.getToast(getActivity(), "后台一键静音服务已经重新启动...");
 
 			}

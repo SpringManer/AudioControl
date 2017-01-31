@@ -33,7 +33,7 @@
         android:layout_below="@+id/tv_des"
         android:layout_centerHorizontal="true"
         android:paddingTop="80dp"
-        android:text="当前版本号：v1.42"
+        android:text="当前版本号：v1.5"
         android:textSize="18sp" />
 
     <ImageButton
